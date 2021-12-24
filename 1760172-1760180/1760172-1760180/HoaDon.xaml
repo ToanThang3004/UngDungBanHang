@@ -1,0 +1,112 @@
+﻿<Window x:Class="_1760172_1760180.HoaDon"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_1760172_1760180"
+        mc:Ignorable="d"
+         Title="Hóa đơn thanh toán" Height="550" Width="1000" Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:ByteArrayToImageConverter x:Key="Converter"/>
+        <local:StringToMoneyFormatConverter x:Key="MoneyConverter"/>
+    </Window.Resources>
+    <Grid Background="#E6F4F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="White" Margin="7">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="400"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
+                <TextBlock Text="Đơn hàng " FontSize="16" Margin="20,0,0,0"/>
+                <TextBlock Text="#" FontSize="16" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Path=ID}" FontSize="16" FontWeight="Bold"/>
+                <TextBlock Text=" - " FontSize="16"/>
+                <TextBlock Text="{Binding Path=TinhTrang}" FontSize="16" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <TextBlock Text="Ngày thanh toán: " FontSize="16"/>
+                <TextBlock Text="{Binding Path=NgayThanhToan}" Margin="0,0,20,0" FontSize="16" FontWeight="Bold"/>
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="1" Background="White" Margin="7">
+            <StackPanel VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Tên khách hàng: " FontSize="16" Margin="20,0,0,0"/>
+                    <TextBlock Text="{Binding Path=TenKH}" FontSize="16" FontWeight="Bold"/>
+                    <TextBlock Text=" - Điện thoại: " FontSize="16" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Path=DienThoai}" FontSize="16" FontWeight="Bold"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Địa chỉ: " FontSize="16" Margin="20,0,0,0" />
+                    <TextBlock Text="{Binding Path=DiaChi}" FontSize="16" FontWeight="Bold"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <ListView Grid.Row="2" Name="lvct_hoadon" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="7">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <StackPanel VerticalAlignment="Center" Margin="5">
+                            <StackPanel Width="90" Height="90">
+                                <Image Width="90" Height="90" Source="{Binding ANH, Converter={StaticResource Converter}}"></Image>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Height="100">
+                                <StackPanel VerticalAlignment="Center">
+                                    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="ID:"/>
+                                        <TextBlock Text="{Binding ID}" FontWeight="Bold"/>
+                                        <TextBlock Text=" - " />
+                                        <TextBlock Text="{Binding TENSP}" FontWeight="Bold"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="Loại: "/>
+                                        <TextBlock Text="{Binding TENLOAISP}" FontWeight="Bold"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="Thương hiệu: "/>
+                                        <TextBlock Text="{Binding TENNHANHANG}" FontWeight="Bold"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="Giá: "/>
+                                        <TextBlock Text="{Binding Converter={StaticResource MoneyConverter }, Path= GIA}" FontWeight="Bold"/>
+                                        <TextBlock Text="đ " FontWeight="Bold"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="Số lượng : "/>
+                                        <TextBlock Text="{Binding SOLUONG}" FontWeight="Bold"/>
+                                        <TextBlock Text="cái " FontWeight="Bold"/>
+                                    </DockPanel>
+                                    <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="Thành tiền : "/>
+                                        <TextBlock Text="{Binding Converter={StaticResource MoneyConverter }, Path=THANHTIEN}" FontWeight="Bold"/>
+                                        <TextBlock Text="cái " FontWeight="Bold"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Grid.Row="3" Background="White" Margin="7">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                <TextBlock Text="Tổng cộng " FontSize="16" VerticalAlignment="Bottom" FontWeight="Bold"  Margin="0,5,0,0" />
+                <TextBlock Text="{Binding Converter={StaticResource MoneyConverter }, Path=TongCong}" FontSize="18" Foreground="Orange" FontWeight="Bold" VerticalAlignment="Bottom" Margin="30,5,20,0"/>
+            </StackPanel>
+            <Button x:Name="btnThanhToan" Content="Thanh toán" Background="SeaGreen" Foreground="White" FontSize="15" Width="200" Height="30" Margin="0,10,20,0"
+                    HorizontalAlignment="Right" Click="btnThanhToan_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
